@@ -262,6 +262,8 @@
         .service-card:nth-child(18) { animation-delay: 1.8s; }
         .service-card:nth-child(19) { animation-delay: 1.9s; }
         .service-card:nth-child(20) { animation-delay: 2.0s; }
+        .service-card:nth-child(21) { animation-delay: 2.1s; }
+        .service-card:nth-child(22) { animation-delay: 2.2s; }
 
         /* Responsive design */
         @media (max-width: 1200px) {
@@ -348,16 +350,178 @@
                 opacity: 0;
             }
         }
+
+        /* Smooth scroll behavior */
+        html {
+            scroll-behavior: smooth;
+        }
+
+        /* Smart Popup Styles */
+        .popup-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.7);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 9999;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.3s ease, visibility 0.3s ease;
+        }
+
+        .popup-overlay.active {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .popup-content {
+            background: white;
+            border-radius: 12px;
+            padding: 2.5rem;
+            max-width: 450px;
+            width: 90%;
+            position: relative;
+            transform: translateY(20px);
+            transition: transform 0.4s ease;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+        }
+
+        .popup-overlay.active .popup-content {
+            transform: translateY(0);
+        }
+
+        .popup-close {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            cursor: pointer;
+            color: var(--gray);
+            transition: var(--transition);
+            width: 30px;
+            height: 30px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+        }
+
+        .popup-close:hover {
+            background: var(--light-gray);
+            color: var(--dark);
+        }
+
+        .popup-icon {
+            font-size: 2.5rem;
+            color: var(--primary);
+            margin-bottom: 1rem;
+            text-align: center;
+        }
+
+        .popup-title {
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+            color: var(--secondary);
+            text-align: center;
+        }
+
+        .popup-message {
+            color: var(--gray);
+            margin-bottom: 1.5rem;
+            text-align: center;
+            line-height: 1.6;
+        }
+
+        .popup-buttons {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+        }
+
+        .popup-btn {
+            padding: 0.8rem 1.5rem;
+            border-radius: 50px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: var(--transition);
+            border: none;
+            font-size: 0.9rem;
+        }
+
+        .popup-btn-primary {
+            background: var(--primary);
+            color: white;
+        }
+
+        .popup-btn-primary:hover {
+            background: var(--primary-dark);
+            transform: translateY(-2px);
+        }
+
+        .popup-btn-secondary {
+            background: var(--light-gray);
+            color: var(--dark);
+        }
+
+        .popup-btn-secondary:hover {
+            background: #e0e0e0;
+            transform: translateY(-2px);
+        }
+
+        .popup-timer {
+            color: var(--primary);
+            font-weight: 600;
+            margin-top: 1rem;
+            text-align: center;
+            font-size: 0.9rem;
+        }
+
+        @media (max-width: 600px) {
+            .popup-content {
+                padding: 1.5rem;
+            }
+            
+            .popup-buttons {
+                flex-direction: column;
+            }
+            
+            .popup-btn {
+                width: 100%;
+            }
+        }
     </style>
 </head>
 <body>
+    <!-- Smart Popup Overlay -->
+    <div class="popup-overlay" id="smartPopup">
+        <div class="popup-content">
+            <button class="popup-close" id="closePopup">×</button>
+            <div class="popup-icon">
+                <i class="fas" id="popupIcon"></i>
+            </div>
+            <h3 class="popup-title" id="popupTitle">Need Help Finding Services?</h3>
+            <p class="popup-message" id="popupMessage">Our experts can help you choose the perfect service for your needs. Get personalized recommendations today!</p>
+            <div class="popup-buttons">
+                <button class="popup-btn popup-btn-primary" id="popupActionBtn">Get Help Now</button>
+                <button class="popup-btn popup-btn-secondary" id="popupCloseBtn">No Thanks</button>
+            </div>
+            <div class="popup-timer" id="popupTimer">Offer expires in: <span id="timerCount">60</span> seconds</div>
+        </div>
+    </div>
+
     <div class="animated-bg">
         <div class="particles" id="particles"></div>
         <div class="container animated-bg-content">
             <header>
-                <h1>Solutions Professionnelles</h1>
-                <p class="subtitle">Des services de qualité pour résoudre vos défis professionnels</p>
-                <a href="#services" class="header-btn">Explorer nos solutions <i class="fas fa-arrow-down"></i></a>
+                <h1>Professional Solutions</h1>
+                <p class="subtitle">Quality services to solve your professional challenges</p>
+                <a href="#services" class="header-btn">Explore our solutions <i class="fas fa-arrow-down"></i></a>
             </header>
         </div>
     </div>
@@ -373,7 +537,7 @@
                 <div class="service-content">
                     <h3 class="service-title">Logo Design</h3>
                     <p class="service-description">Creation of unique logos for businesses and personal brands.</p>
-                    <a href="https://go.fiverr.com/visit/?bta=995686&brand=fiverrmarketplace&landingPage=https%253A%252F%252Fwww.fiverr.com%252Floftydesignshop%252Fdo-modern-minimalist-logo-design-for-your-business%253Fcontext_referrer%253Dsearch_gigs%2526source%253Dsorting_by%2526ref_ctx_id%253D2b2792120b9e4d758cb8cc7e82573d6d%2526pckg_id%253D1%2526pos%253D4%2526context_type%253Drating%2526funnel%253D2b2792120b9e4d758cb8cc7e82573d6d%2526ref%253Dpro%25253Aany%2526seller_online%253Dtrue%2526imp_id%253D9270d61a-71f6-4db7-b300-406a24470e43" class="service-btn">View Service <i class="fas fa-arrow-right"></i></a>
+                    <a href="#" class="service-btn">View Service <i class="fas fa-arrow-right"></i></a>
                 </div>
             </div>
 
@@ -386,7 +550,7 @@
                 <div class="service-content">
                     <h3 class="service-title">Document Translation</h3>
                     <p class="service-description">Professional translation of texts in various languages.</p>
-                    <a href="https://go.fiverr.com/visit/?bta=995686&brand=fiverrmarketplace&landingPage=https%253A%252F%252Fwww.fiverr.com%252Fadampc%252Ftranslate-any-legal-document-into-german-for-you%253Fcontext_referrer%253Dsearch_gigs%2526source%253Dsorting_by%2526ref_ctx_id%253D07a0d73ea08b4bd5a87ed456399adb27%2526pckg_id%253D1%2526pos%253D1%2526context_type%253Drating%2526funnel%253D07a0d73ea08b4bd5a87ed456399adb27%2526ref%253Dpro%25253Aany%2526imp_id%253D065191c1-e1c0-4150-93b5-e52f375b6eef" class="service-btn">View Service <i class="fas fa-arrow-right"></i></a>
+                    <a href="#" class="service-btn">View Service <i class="fas fa-arrow-right"></i></a>
                 </div>
             </div>
 
@@ -399,7 +563,7 @@
                 <div class="service-content">
                     <h3 class="service-title">Video Editing</h3>
                     <p class="service-description">Editing and enhancing videos for YouTube, ads, and social media.</p>
-                    <a href="https://go.fiverr.com/visit/?bta=995686&brand=fiverrmarketplace&landingPage=https%253A%252F%252Fwww.fiverr.com%252Fstrongathome%252Fdo-professional-video-editing%253Fcontext_referrer%253Dsearch_gigs%2526source%253Dtoggle_filters%2526ref_ctx_id%253D69d3de5e11b5423d81b112d0ee5003d2%2526pckg_id%253D1%2526pos%253D2%2526context_type%253Dauto%2526funnel%253D69d3de5e11b5423d81b112d0ee5003d2%2526ref%253Dpro%25253Aany%2526imp_id%253Dd282e3ce-0b58-4e45-8717-b993d43810a4" class="service-btn">View Service <i class="fas fa-arrow-right"></i></a>
+                    <a href="#" class="service-btn">View Service <i class="fas fa-arrow-right"></i></a>
                 </div>
             </div>
 
@@ -412,7 +576,7 @@
                 <div class="service-content">
                     <h3 class="service-title">Article Writing</h3>
                     <p class="service-description">Creation of optimized content for web and blogs.</p>
-                    <a href="https://go.fiverr.com/visit/?bta=995686&brand=fiverrmarketplace&landingPage=https%253A%252F%252Fwww.fiverr.com%252Frachel207%252Fwrite-a-blog-on-business-or-accounting%253Fcontext_referrer%253Dsearch_gigs%2526source%253Dtoggle_filters%2526ref_ctx_id%253Db063784cc05b499694dfbdc70f2dc63b%2526pckg_id%253D1%2526pos%253D8%2526context_type%253Dauto%2526funnel%253Db063784cc05b499694dfbdc70f2dc63b%2526ref%253Dpro%25253Aany%2526imp_id%253Da219f485-6287-4ef9-ba38-e752bfe7a8f7" class="service-btn">View Service <i class="fas fa-arrow-right"></i></a>
+                    <a href="#" class="service-btn">View Service <i class="fas fa-arrow-right"></i></a>
                 </div>
             </div>
 
@@ -425,7 +589,7 @@
                 <div class="service-content">
                     <h3 class="service-title">SEO</h3>
                     <p class="service-description">Search engine optimization - Improving website ranking on Google.</p>
-                    <a href="https://go.fiverr.com/visit/?bta=995686&brand=fiverrmarketplace&landingPage=https%253A%252F%252Fwww.fiverr.com%252Fthefactomike%252Fexecute-a-full-service-digital-marketing-strategy%253Fcontext_referrer%253Dsearch_gigs%2526source%253Dtoggle_filters%2526ref_ctx_id%253Da975a6fc0b0f4b369daa4a1872ab9ede%2526pckg_id%253D1%2526pos%253D8%2526context_type%253Dauto%2526funnel%253Da975a6fc0b0f4b369daa4a1872ab9ede%2526ref%253Dpro%25253Aany%2526imp_id%253D8ffc6a6d-3db1-41e6-a839-d39932b53854" class="service-btn">View Service <i class="fas fa-arrow-right"></i></a>
+                    <a href="#" class="service-btn">View Service <i class="fas fa-arrow-right"></i></a>
                 </div>
             </div>
 
@@ -438,7 +602,7 @@
                 <div class="service-content">
                     <h3 class="service-title">Website Creation</h3>
                     <p class="service-description">Development of professional websites on WordPress, Shopify, etc.</p>
-                    <a href="https://go.fiverr.com/visit/?bta=995686&brand=fiverrmarketplace&landingPage=https%253A%252F%252Fwww.fiverr.com%252Fdeclanmaltman%252Fcreate-a-responsive-wordpress-website%253Fcontext_referrer%253Dsearch_gigs%2526source%253Dtoggle_filters%2526ref_ctx_id%253D627f7aac3e484f49acca31995023f097%2526pckg_id%253D1%2526pos%253D8%2526context_type%253Dauto%2526funnel%253D627f7aac3e484f49acca31995023f097%2526ref%253Dpro%25253Aany%2526seller_online%253Dtrue%2526imp_id%253D97210562-624c-4786-8665-0888408de049" class="service-btn">View Service <i class="fas fa-arrow-right"></i></a>
+                    <a href="#" class="service-btn">View Service <i class="fas fa-arrow-right"></i></a>
                 </div>
             </div>
 
@@ -451,7 +615,7 @@
                 <div class="service-content">
                     <h3 class="service-title">Graphic Design</h3>
                     <p class="service-description">Creation of visuals for social media, posters, flyers and more.</p>
-                    <a href="https://go.fiverr.com/visit/?bta=995686&brand=fiverrmarketplace&landingPage=https%253A%252F%252Fwww.fiverr.com%252Fdreejc7%252Fdesign-infographics-for-your-social-media%253Fcontext_referrer%253Dsearch_gigs%2526source%253Dtoggle_filters%2526ref_ctx_id%253D7027100f0fb64d4a9eda87b62b9105dd%2526pckg_id%253D1%2526pos%253D3%2526context_type%253Dauto%2526funnel%253D7027100f0fb64d4a9eda87b62b9105dd%2526ref%253Dpro%25253Aany%2526seller_online%253Dtrue%2526imp_id%253D31c9fa3c-52d0-4627-8eee-c89462ebaffb" class="service-btn">View Service <i class="fas fa-arrow-right"></i></a>
+                    <a href="#" class="service-btn">View Service <i class="fas fa-arrow-right"></i></a>
                 </div>
             </div>
 
@@ -464,7 +628,7 @@
                 <div class="service-content">
                     <h3 class="service-title">Voice Over</h3>
                     <p class="service-description">Professional voice recording for videos, podcasts and commercials.</p>
-                    <a href="https://go.fiverr.com/visit/?bta=995686&brand=fiverrmarketplace&landingPage=https%253A%252F%252Fwww.fiverr.com%252Fnicolecarino%252Frecord-a-professional-american-female-voiceover%253Fcontext_referrer%253Dsearch_gigs%2526source%253Dsorting_by%2526ref_ctx_id%253Da75d61af2ba544868f5c2df9224d4c75%2526pckg_id%253D1%2526pos%253D1%2526calc%253D200%2526context_type%253Drating%2526funnel%253Da75d61af2ba544868f5c2df9224d4c75%2526ref%253Dpro%25253Aany%2526imp_id%253D2671ad30-1d3c-42ba-a656-73686986bcf6" class="service-btn">View Service <i class="fas fa-arrow-right"></i></a>
+                    <a href="#" class="service-btn">View Service <i class="fas fa-arrow-right"></i></a>
                 </div>
             </div>
 
@@ -477,7 +641,7 @@
                 <div class="service-content">
                     <h3 class="service-title">Social Media Marketing</h3>
                     <p class="service-description">Management and optimization of Instagram, Facebook, TikTok accounts.</p>
-                    <a href="https://go.fiverr.com/visit/?bta=995686&brand=fiverrmarketplace&landingPage=https%253A%252F%252Fwww.fiverr.com%252Felifaydogan%252Fbe-your-social-media-marketing-manager%253Fcontext_referrer%253Dsearch_gigs%2526source%253Dsorting_by%2526ref_ctx_id%253D3890ac7b618e4dfabc4dd335c0b2366b%2526pckg_id%253D1%2526pos%253D1%2526context_type%253Drating%2526funnel%253D3890ac7b618e4dfabc4dd335c0b2366b%2526ref%253Dpro%25253Aany%2526imp_id%253D2454f08f-9ea0-4389-98e4-d888fb1d8f8d" class="service-btn">View Service <i class="fas fa-arrow-right"></i></a>
+                    <a href="#" class="service-btn">View Service <i class="fas fa-arrow-right"></i></a>
                 </div>
             </div>
 
@@ -490,7 +654,7 @@
                 <div class="service-content">
                     <h3 class="service-title">Video Animation</h3>
                     <p class="service-description">Creation of 2D and 3D animations for various projects.</p>
-                    <a href="https://go.fiverr.com/visit/?bta=995686&brand=fiverrmarketplace&landingPage=https%253A%252F%252Fwww.fiverr.com%252Fguyman20%252Fcreate-a-fully-custom-whiteboard-video%253Fcontext_referrer%253Dsearch_gigs%2526source%253Dsorting_by%2526ref_ctx_id%253De1c4e81265a14fc2ad2685c8e8054c63%2526pckg_id%253D1%2526pos%253D4%2526context_type%253Drating%2526funnel%253De1c4e81265a14fc2ad2685c8e8054c63%2526ref%253Dpro%25253Aany%2526imp_id%253D785bf10f-1cb4-4ef2-bde4-cffd7e579c7a" class="service-btn">View Service <i class="fas fa-arrow-right"></i></a>
+                    <a href="#" class="service-btn">View Service <i class="fas fa-arrow-right"></i></a>
                 </div>
             </div>
 
@@ -503,7 +667,7 @@
                 <div class="service-content">
                     <h3 class="service-title">Digital Advertising</h3>
                     <p class="service-description">Advertising campaigns on Google Ads and Facebook Ads.</p>
-                    <a href="https://go.fiverr.com/visit/?bta=995686&brand=fiverrmarketplace&landingPage=https%253A%252F%252Fwww.fiverr.com%252Ffatimehrida%252Fredesign-wordpress-website-professionally-for-your-business%253Fcontext_referrer%253Dsearch_gigs%2526source%253Dtoggle_filters%2526ref_ctx_id%253D1edfea2bb3de45238a93e4f3f7bb09f2%2526pckg_id%253D1%2526pos%253D3%2526context_type%253Drating%2526funnel%253D1edfea2bb3de45238a93e4f3f7bb09f2%2526ref%253Dpro%25253Aany%2526imp_id%253D58fa53e3-affe-4b17-9694-3ac099421e42" class="service-btn">View Service <i class="fas fa-arrow-right"></i></a>
+                    <a href="#" class="service-btn">View Service <i class="fas fa-arrow-right"></i></a>
                 </div>
             </div>
 
@@ -516,7 +680,7 @@
                 <div class="service-content">
                     <h3 class="service-title">Proofreading and Editing</h3>
                     <p class="service-description">Checking and improving texts for better quality.</p>
-                    <a href="https://go.fiverr.com/visit/?bta=995686&brand=fiverrmarketplace&landingPage=https%253A%252F%252Fwww.fiverr.com%252Fiamdavidporter%252Fwrite-500-words-blog-articles-by-native-english-in-24-hours%253Fcontext_referrer%253Dsearch_gigs%2526source%253Dsorting_by%2526ref_ctx_id%253Db2a03feba3be484b9e276eef0315d8c8%2526pckg_id%253D1%2526pos%253D3%2526context_type%253Drating%2526funnel%253Db2a03feba3be484b9e276eef0315d8c8%2526imp_id%253D5e7a0ca0-2c8e-47eb-a601-f57c843ba747" class="service-btn">View Service <i class="fas fa-arrow-right"></i></a>
+                    <a href="#" class="service-btn">View Service <i class="fas fa-arrow-right"></i></a>
                 </div>
             </div>
 
@@ -529,7 +693,7 @@
                 <div class="service-content">
                     <h3 class="service-title">YouTube Content Creation</h3>
                     <p class="service-description">Scripts, editing and optimization of YouTube videos.</p>
-                    <a href="https://go.fiverr.com/visit/?bta=995686&brand=fiverrmarketplace&landingPage=https%253A%252F%252Fwww.fiverr.com%252Fworldwit%252Fcreate-studio-quality-ugc-videos-as-your-american-presenter%253Fcontext_referrer%253Dsearch_gigs%2526source%253Dtoggle_filters%2526ref_ctx_id%253Df8c2cc254a324561acbd19e557d86ce4%2526pckg_id%253D1%2526pos%253D1%2526context_type%253Drating%2526funnel%253Df8c2cc254a324561acbd19e557d86ce4%2526ref%253Dpro%25253Aany%2526imp_id%253D3b194178-3a7d-4aaa-9c03-648756a326e1" class="service-btn">View Service <i class="fas fa-arrow-right"></i></a>
+                    <a href="#" class="service-btn">View Service <i class="fas fa-arrow-right"></i></a>
                 </div>
             </div>
 
@@ -542,7 +706,7 @@
                 <div class="service-content">
                     <h3 class="service-title">Mobile App Development</h3>
                     <p class="service-description">Creation of applications for iOS and Android.</p>
-                    <a href="https://go.fiverr.com/visit/?bta=995686&brand=fiverrmarketplace&landingPage=https%253A%252F%252Fwww.fiverr.com%252Fmicmed%252Fbe-your-mobile-app-developer-to-develop-android-ios-mobile-app%253Fcontext_referrer%253Dsearch_gigs%2526source%253Dtoggle_filters%2526ref_ctx_id%253D0ce7aca8cda844f497ed6f4df14445df%2526pckg_id%253D1%2526pos%253D1%2526context_type%253Drating%2526funnel%253D0ce7aca8cda844f497ed6f4df14445df%2526ref%253Dpro%25253Aany%2526seller_online%253Dtrue%2526imp_id%253Dde29540b-e5e9-468f-ba10-569e5254aef8" class="service-btn">View Service <i class="fas fa-arrow-right"></i></a>
+                    <a href="#" class="service-btn">View Service <i class="fas fa-arrow-right"></i></a>
                 </div>
             </div>
 
@@ -555,7 +719,7 @@
                 <div class="service-content">
                     <h3 class="service-title">Digital Illustration</h3>
                     <p class="service-description">Custom drawings and illustrations for various uses.</p>
-                    <a href="https://go.fiverr.com/visit/?bta=995686&brand=fiverrmarketplace&landingPage=https%253A%252F%252Fwww.fiverr.com%252Ffahmin%252Fdo-digital-illustration-concept-art-and-realistic-portrait-painting%253Fcontext_referrer%253Dsearch_gigs%2526source%253Dtoggle_filters%2526ref_ctx_id%253D0570035cc5ee467ba3f53de3c401620a%2526pckg_id%253D1%2526pos%253D3%2526context_type%253Drating%2526funnel%253D0570035cc5ee467ba3f53de3c401620a%2526ref%253Dpro%25253Aany%2526imp_id%253D6307f451-cbb5-4e78-8880-ca367cdf1808" class="service-btn">View Service <i class="fas fa-arrow-right"></i></a>
+                    <a href="#" class="service-btn">View Service <i class="fas fa-arrow-right"></i></a>
                 </div>
             </div>
 
@@ -568,7 +732,7 @@
                 <div class="service-content">
                     <h3 class="service-title">Online Store Management</h3>
                     <p class="service-description">Assistance for Shopify, Etsy and Amazon stores.</p>
-                    <a href="https://go.fiverr.com/visit/?bta=995686&brand=fiverrmarketplace&landingPage=https%253A%252F%252Fwww.fiverr.com%252Fmr_darshanpatel%252Fall-in-one-wordpress-problem-solution%253Fcontext_referrer%253Dsearch_gigs%2526source%253Dtoggle_filters%2526ref_ctx_id%253De4f9ec22274b4a21a23df155acada9a8%2526pckg_id%253D1%2526pos%253D1%2526context_type%253Drating%2526funnel%253De4f9ec22274b4a21a23df155acada9a8%2526ref%253Dpro%25253Aany%2526seller_online%253Dtrue%2526imp_id%253D5856c5e7-212d-483e-b442-be27a43341fa" class="service-btn">View Service <i class="fas fa-arrow-right"></i></a>
+                    <a href="#" class="service-btn">View Service <i class="fas fa-arrow-right"></i></a>
                 </div>
             </div>
 
@@ -581,7 +745,7 @@
                 <div class="service-content">
                     <h3 class="service-title">Business Consultation</h3>
                     <p class="service-description">Advice for entrepreneurs and startups.</p>
-                    <a href="https://www.fiverr.com/williambryan392/business-consultant-mentor-coach?context_referrer=search_gigs&source=toggle_filters&ref_ctx_id=f27a15e568914d7d8f86887e14057322&pckg_id=1&pos=1&context_type=rating&funnel=f27a15e568914d7d8f86887e14057322&ref=pro%3Aany&imp_id=903b2f34-69af-40a6-8d88-ebc5761f8f03" class="service-btn">View Service <i class="fas fa-arrow-right"></i></a>
+                    <a href="#" class="service-btn">View Service <i class="fas fa-arrow-right"></i></a>
                 </div>
             </div>
 
@@ -594,7 +758,7 @@
                 <div class="service-content">
                     <h3 class="service-title">Music and Jingle Creation</h3>
                     <p class="service-description">Composition of music for videos and podcasts.</p>
-                    <a href="https://go.fiverr.com/visit/?bta=995686&brand=fiverrmarketplace&landingPage=https%253A%252F%252Fwww.fiverr.com%252Fnataliesauti%252Fcreate-and-sing-background-vocals-for-your-song%253Fcontext_referrer%253Dsearch_gigs%2526source%253Dtoggle_filters%2526ref_ctx_id%253D9681f962fd4b45f1b365f8c937e1c818%2526pckg_id%253D1%2526pos%253D4%2526context_type%253Drating%2526funnel%253D9681f962fd4b45f1b365f8c937e1c818%2526ref%253Dpro%25253Aany%2526imp_id%253Db79815de-124b-40eb-89b5-3585bc19bb1f" class="service-btn">View Service <i class="fas fa-arrow-right"></i></a>
+                    <a href="#" class="service-btn">View Service <i class="fas fa-arrow-right"></i></a>
                 </div>
             </div>
 
@@ -607,7 +771,7 @@
                 <div class="service-content">
                     <h3 class="service-title">Photo Retouching</h3>
                     <p class="service-description">Enhancement and modification of images for professional results.</p>
-                    <a href="https://go.fiverr.com/visit/?bta=995686&brand=fiverrmarketplace&landingPage=https%253A%252F%252Fwww.fiverr.com%252Felizaisseliza%252Fdo-express-photo-editing-and-retouching-in-photoshop%253Fcontext_referrer%253Dsearch_gigs%2526source%253Dtoggle_filters%2526ref_ctx_id%253Da737d0e3eb8d4915a32798e704f7632a%2526pckg_id%253D1%2526pos%253D2%2526context_type%253Drating%2526funnel%253Da737d0e3eb8d4915a32798e704f7632a%2526ref%253Dpro%25253Aany%2526imp_id%253D1621c730-dbbe-4b19-90be-3e49addf0f66" class="service-btn">View Service <i class="fas fa-arrow-right"></i></a>
+                    <a href="#" class="service-btn">View Service <i class="fas fa-arrow-right"></i></a>
                 </div>
             </div>
 
@@ -620,7 +784,33 @@
                 <div class="service-content">
                     <h3 class="service-title">Training and Coaching</h3>
                     <p class="service-description">Online courses and personalized coaching in various fields.</p>
-                    <a href="https://go.fiverr.com/visit/?bta=995686&brand=fiverrmarketplace&landingPage=https%253A%252F%252Fwww.fiverr.com%252Fmmashaw%252Fbe-your-seo-and-content-marketing-consultant%253Fcontext_referrer%253Dsearch_gigs%2526source%253Dtoggle_filters%2526ref_ctx_id%253D6ab6210c5db14826b086de9a78129338%2526pckg_id%253D1%2526pos%253D1%2526context_type%253Drating%2526funnel%253D6ab6210c5db14826b086de9a78129338%2526ref%253Dpro%25253Aany%2526imp_id%253D7275b0a2-b821-4176-8d1f-0ec9f874fb15" class="service-btn">View Service <i class="fas fa-arrow-right"></i></a>
+                    <a href="#" class="service-btn">View Service <i class="fas fa-arrow-right"></i></a>
+                </div>
+            </div>
+
+            <!-- Service 21: Pro Services -->
+            <div class="service-card floating">
+                <div class="service-image-container">
+                    <img src="https://images.unsplash.com/photo-1552664730-d307ca884978?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1170&q=80" alt="Pro Services" class="service-image">
+                    <span class="service-category">Premium</span>
+                </div>
+                <div class="service-content">
+                    <h3 class="service-title">Pro Services</h3>
+                    <p class="service-description">Access our premium professional services for businesses and enterprises with dedicated support and advanced solutions.</p>
+                    <a href="#" class="service-btn">View Service <i class="fas fa-arrow-right"></i></a>
+                </div>
+            </div>
+
+            <!-- Service 22: Become a Fiverr Affiliate -->
+            <div class="service-card floating">
+                <div class="service-image-container">
+                    <img src="https://images.unsplash.com/photo-1552664730-d307ca884978?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1170&q=80" alt="Become a Fiverr Affiliate" class="service-image">
+                    <span class="service-category">Opportunity</span>
+                </div>
+                <div class="service-content">
+                    <h3 class="service-title">Become a Fiverr Affiliate</h3>
+                    <p class="service-description">Join our affiliate program and earn commissions by referring clients to our professional services platform.</p>
+                    <a href="#" class="service-btn">View Service <i class="fas fa-arrow-right"></i></a>
                 </div>
             </div>
         </div>
@@ -634,7 +824,138 @@
     </footer>
 
     <script>
-        
+        // Smart Popup Logic
+        const smartPopup = {
+            initialized: false,
+            hasShown30SecPopup: false,
+            hasShownExitPopup: false,
+            timerPopupShown: false,
+            exitIntentDetected: false,
+            popupTimer: null,
+            countdownTimer: null,
+
+            init: function() {
+                if (this.initialized) return;
+                
+                // Timer for 30-second popup
+                setTimeout(() => {
+                    if (!this.hasShown30SecPopup && !this.exitIntentDetected) {
+                        this.showPopup('30sec');
+                        this.hasShown30SecPopup = true;
+                    }
+                }, 30000); // 30 seconds
+
+                // Exit intent detection
+                document.addEventListener('mouseout', (e) => {
+                    if (e.clientY < 0 && !this.hasShownExitPopup && !this.exitIntentDetected) {
+                        this.exitIntentDetected = true;
+                        this.showPopup('exit');
+                        this.hasShownExitPopup = true;
+                    }
+                });
+
+                // Close popup when clicking outside
+                document.getElementById('smartPopup').addEventListener('click', (e) => {
+                    if (e.target.id === 'smartPopup') {
+                        this.closePopup();
+                    }
+                });
+
+                // Close button
+                document.getElementById('closePopup').addEventListener('click', () => {
+                    this.closePopup();
+                });
+
+                // No thanks button
+                document.getElementById('popupCloseBtn').addEventListener('click', () => {
+                    this.closePopup();
+                });
+
+                // Action button
+                document.getElementById('popupActionBtn').addEventListener('click', () => {
+                    this.handleAction();
+                });
+
+                this.initialized = true;
+            },
+
+            showPopup: function(type) {
+                const popup = document.getElementById('smartPopup');
+                const icon = document.getElementById('popupIcon');
+                const title = document.getElementById('popupTitle');
+                const message = document.getElementById('popupMessage');
+                const actionBtn = document.getElementById('popupActionBtn');
+                const timerElement = document.getElementById('popupTimer');
+                const timerCount = document.getElementById('timerCount');
+
+                if (type === '30sec') {
+                    icon.className = 'fas fa-question-circle';
+                    title.textContent = 'Need Help Finding the Right Service?';
+                    message.textContent = "With so many options, it can be overwhelming. Let our experts guide you to the perfect solution for your specific needs!";
+                    actionBtn.textContent = 'Get Personalized Help';
+                    timerElement.style.display = 'none';
+                } else if (type === 'exit') {
+                    icon.className = 'fas fa-gift';
+                    title.textContent = 'Special Offer: 10% Off Your First Order!';
+                    message.textContent = "Don't leave empty-handed! Get 10% discount on your first service order. This offer expires soon!";
+                    actionBtn.textContent = 'Claim My 10% Discount';
+                    timerElement.style.display = 'block';
+                    
+                    // Start countdown timer
+                    let seconds = 60;
+                    timerCount.textContent = seconds;
+                    
+                    if (this.countdownTimer) clearInterval(this.countdownTimer);
+                    
+                    this.countdownTimer = setInterval(() => {
+                        seconds--;
+                        timerCount.textContent = seconds;
+                        
+                        if (seconds <= 0) {
+                            clearInterval(this.countdownTimer);
+                            this.closePopup();
+                        }
+                    }, 1000);
+                }
+
+                popup.classList.add('active');
+                document.body.style.overflow = 'hidden';
+                
+                // Auto close after 60 seconds if not closed
+                if (this.popupTimer) clearTimeout(this.popupTimer);
+                this.popupTimer = setTimeout(() => {
+                    this.closePopup();
+                }, 60000);
+            },
+
+            closePopup: function() {
+                const popup = document.getElementById('smartPopup');
+                popup.classList.remove('active');
+                document.body.style.overflow = 'auto';
+                
+                if (this.countdownTimer) {
+                    clearInterval(this.countdownTimer);
+                    this.countdownTimer = null;
+                }
+                
+                if (this.popupTimer) {
+                    clearTimeout(this.popupTimer);
+                    this.popupTimer = null;
+                }
+            },
+
+            handleAction: function() {
+                // Track conversion
+                console.log('Popup action clicked - potential conversion!');
+                
+                // Redirect to contact/help page or show success message
+                alert('Thank you for your interest! You will be redirected to our contact page.');
+                // In production, replace with: window.location.href = '#';
+                
+                this.closePopup();
+            }
+        };
+
         // Additional animations on scroll
         document.addEventListener('DOMContentLoaded', function() {
             const cards = document.querySelectorAll('.service-card');
@@ -686,6 +1007,24 @@
                 
                 particlesContainer.appendChild(particle);
             }
+
+            // Smooth scroll for title button
+            document.querySelector('.header-btn').addEventListener('click', function(e) {
+                e.preventDefault();
+                const targetId = this.getAttribute('href');
+                const targetElement = document.querySelector(targetId);
+                if (targetElement) {
+                    window.scrollTo({
+                        top: targetElement.offsetTop - 20,
+                        behavior: 'smooth'
+                    });
+                }
+            });
+
+            // Initialize smart popup
+            setTimeout(() => {
+                smartPopup.init();
+            }, 1000); // Delay initialization to let page load
         });
     </script>
 </body>
